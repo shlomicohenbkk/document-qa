@@ -25,8 +25,8 @@ else:
 
     # Ask the user for a question via `st.text_area`.
     question = st.text_area(
-        "Now ask a question about the document!",
-        placeholder="Can you give me a short summary?",
+        "Now ask ask the AI to write SEO optimized product description!",
+        placeholder="Please write SEO optimized 40 words product description, key attributes, benefits, and recommended keywords",
         disabled=not uploaded_file,
     )
 

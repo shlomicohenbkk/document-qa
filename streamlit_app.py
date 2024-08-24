@@ -31,7 +31,7 @@ else:
         messages = [
             {
                 "role": "system",
-                "content": "You are an expert SEO writer specializing in product descriptions. Focus on optimizing content for search engines while maintaining readability.",
+                "content": "You are an expert SEO writer specializing in product descriptions. Focus on optimizing content for search engines while maintaining readability, Write an SEO-optimized 40-word product description, highlighting key attributes, benefits, and recommended keywords.",
             },
             {
                 "role": "user",

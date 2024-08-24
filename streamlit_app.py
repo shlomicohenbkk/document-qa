@@ -2,19 +2,14 @@ import streamlit as st
 from openai import OpenAI
 
 # Show title and description.
-st.title("📄 Shlomi's File Database")
-st.write(
-    "Step 1 - Upload your product information document"
-)
+st.title("📄 Shlomi's SEO Product Description Generator")
+st.write("Step 1 - Upload your product information document")
 
 # Ask user for their OpenAI API key via `st.text_input`.
-# Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
-# via `st.secrets`, see https://docs.streamlit.io/develop/concepts/connections/secrets-management
 openai_api_key = st.text_input("OpenAI API Key", type="password")
 if not openai_api_key:
     st.info("Please add your OpenAI API key to continue.", icon="🗝️")
 else:
-
     # Create an OpenAI client.
     client = OpenAI(api_key=openai_api_key)
 
@@ -25,28 +20,40 @@ else:
 
     # Ask the user for a question via `st.text_area`.
     question = st.text_area(
-        "Step 2 - ask the AI to write SEO optimized product description!",
-        placeholder="Write SEO optimized 40 words product description, key attributes, benefits, and recommended keywords",
+        "Step 2 - Ask the AI to write an SEO-optimized product description!",
+        placeholder="e.g., Write an SEO-optimized 40-word product description, highlighting key attributes, benefits, and recommended keywords.",
         disabled=not uploaded_file,
     )
 
     if uploaded_file and question:
-
         # Process the uploaded file and question.
         document = uploaded_file.read().decode()
         messages = [
             {
+                "role": "system",
+                "content": "You are an expert SEO writer specializing in product descriptions. Focus on optimizing content for search engines while maintaining readability.",
+            },
+            {
                 "role": "user",
-                "content": f"Here's a document: {document} \n\n---\n\n {question}",
-            }
+                "content": f"Here's the product document:\n\n{document}\n\n---\n\n{question}",
+            },
         ]
 
         # Generate an answer using the OpenAI API.
-        stream = client.chat.completions.create(
+        response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=messages,
-            stream=True,
+            stream=False,
         )
 
-        # Stream the response to the app using `st.write_stream`.
-        st.write_stream(stream)
+        # Display the AI's SEO-optimized content.
+        st.subheader("SEO-Optimized Product Description")
+        st.write(response["choices"][0]["message"]["content"])
+
+        # Save the generated content as a text file.
+        st.download_button(
+            label="Download SEO Description",
+            data=response["choices"][0]["message"]["content"],
+            file_name="seo_product_description.txt",
+            mime="text/plain",
+        )

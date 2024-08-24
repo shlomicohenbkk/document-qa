@@ -4,7 +4,7 @@ from openai import OpenAI
 # Show title and description.
 st.title("📄 Shlomi's File Database")
 st.write(
-    "Upload a document below and ask a question about it"
+    "Step 1 - Upload your product information document"
 )
 
 # Ask user for their OpenAI API key via `st.text_input`.
@@ -25,8 +25,8 @@ else:
 
     # Ask the user for a question via `st.text_area`.
     question = st.text_area(
-        "Now ask ask the AI to write SEO optimized product description!",
-        placeholder="Please write SEO optimized 40 words product description, key attributes, benefits, and recommended keywords",
+        "Step 2 - ask the AI to write SEO optimized product description!",
+        placeholder="Write SEO optimized 40 words product description, key attributes, benefits, and recommended keywords",
         disabled=not uploaded_file,
     )
 
